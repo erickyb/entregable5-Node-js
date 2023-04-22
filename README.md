@@ -1,7 +1,8 @@
 # entregable5-Node-js
 
 API DE RED SOCIAL
-https://dbdiagram.io/d/644299866b31947051fc149d
+ 
+1.- https://dbdiagram.io/d/644299866b31947051fc149d
 
 TEMAS POR REALIZAR EN PROCESO 
 TODO 
