@@ -5,9 +5,9 @@ https://dbdiagram.io/d/644299866b31947051fc149d
 
 TEMAS POR REALIZAR EN PROCESO 
 TODO 
--[x] CRUD de usuarios 
--[x] Registro de Usuarios 
--[ ] Manejar Publicaciones (CRUD) 
+- [x] CRUD de usuarios 
+- [x] Registro de Usuarios 
+- [ ] Manejar Publicaciones (CRUD) 
 -[ ] Reaccionar a las publicaciones 
 -[ ] Comentar publicaciones 
 -[ ] Buscador de usuarios 
