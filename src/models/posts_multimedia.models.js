@@ -1,5 +1,6 @@
 const db = require('../utils/database')
-const {DataTypes } = require('sequelize')
+const { DataTypes } = require('sequelize')
+const Posts = require('./posts.models')
 
 const PostsMultimedia = db.define('posts_multimedia', {
   id: {
@@ -26,7 +27,10 @@ const PostsMultimedia = db.define('posts_multimedia', {
       model: Posts,
       key:'id'
     }
+  },
+  status: {
+    type:DataTypes.ENUM('active','deleted')
   }
 })
 
-modele.exports = PostsMultimedia
+module.exports = PostsMultimedia

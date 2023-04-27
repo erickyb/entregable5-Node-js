@@ -1,30 +1,30 @@
-const { DataTypes } = requir('sequelize')
+const { DataTypes } = require('sequelize')
 
 const db = require('../utils/database')
 const Users = require('./users.models')
 const Posts = require('./posts.models')
-const { model } = require('../utils/database')
 
-const likes = db.define('likes', {
+
+const Likes = db.define('likes', {
   
   userId: {
-    tytpe: DataTypes.UUID,
+    type: DataTypes.UUID,
     primaryKey: true,
     references: {
       model: Users,
-      ke:'id'
+      key:'id'
     },
 
   },
   postId: {
-    tytpe: DataTypes.UUID,
+    type: DataTypes.UUID,
     primaryKey: true,
     references: {
-      model: Users,
-      ke: 'id'
-    },
+      model: Posts,
+      key: 'id'
+    }
   }
 })
 
-modele.exports = likes
+module.exports = Likes
 

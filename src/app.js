@@ -1,59 +1,61 @@
-//! const dotenv = require('dotenv')
-//! dotenv.config()
-
+const express = require('express')
+const cors = require('cors')
 require('dotenv').config()
 
-const config = {
-  port: process.env.PORT || 5000,
-  nodeEnv: process.env.NODE_ENV || "dev", //? dev, prod, test
-  db: {
-    dev: {
-      dialect: "postgres",
-      host: "localhost",
-      port: 5432,
-      database: "users",
-      username: "postgres",
-      password: "root",
-      //Extra configs
-      define: {
-        timestamps: true,
-        underscored: true,
-      },
-    },
-    prod: {
-      dialect: "postgres",
-      host: process.env.DB_PROD_HOST,
-      port: process.env.DB_PROD_PORT,
-      database: process.env.DB_PROD_NAME,
-      username: process.env.DB_PROD_USER,
-      password: process.env.DB_PROD_PASS,
-      //Extra configs
-      define: {
-        timestamps: true,
-        underscored: true,
-      },
-      //Esta configuracion es para produccion
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false,
-        },
-      },
-    },
-    test: {
-      dialect: "postgres",
-      host: "localhost",
-      port: 5432,
-      database: "users",
-      username: "postgres",
-      password: "root",
-      //Extra configs
-      define: {
-        timestamps: true,
-        underscored: true,
-      },
-    },
-  },
-};
+const userRouter = require('./users/users.router')
+const authRouter = require('./auth/auth.router')
+const postRouter = require('./posts/posts.router')
 
-module.exports = config
+const db = require('./utils/database')
+const initModels = require('./models/initModels')
+
+const app = express()
+
+const PORT = process.env.PORT || 3000
+
+//? Validar la conexión
+
+
+db.authenticate()
+  .then(() => console.log('Database Authenticated!'))
+  .catch(err =>console.log(err))
+
+
+db.sync()
+  .then(() => console.log('Database Synced!'))
+  .catch(err => console.log(err))
+
+initModels()
+
+app.use(express.json())
+app.use(cors())
+
+const loggerMiddleware = (req, res, next) => {
+  console.log(`${req.nethod} | ${req.path}`)
+  if (req.method !== 'DELETE') {
+    next()
+    return
+  }
+  res.status(400).json({message:'no lo hagas papu'})
+}
+
+app.use(loggerMiddleware)
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Server Ok',
+    myMessage: req.message,
+    myPort: process.env.PORT,
+    queries:req.query
+  })
+})
+
+app.use('/api/v1/users', userRouter)
+app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/posts', postRouter)
+
+
+app.listen(PORT, () => {
+  Console.log(`server started at port ${PORT}`)
+})
+

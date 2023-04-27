@@ -22,3 +22,5 @@ const Follows = db.define('follows', {
     }
 }
 }) 
+
+module.exports = Follows

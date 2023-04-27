@@ -1,9 +1,9 @@
 const db = require('../utils/database')
 const { DataTypes } = require('sequelize')
 const Posts = require('./posts.models')
-const { mainModule } = require('process')
+const Users =require('./users.models')
 
-const Connents = db.define('comments', {
+const Comments = db.define('comments', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true
@@ -27,6 +27,9 @@ const Connents = db.define('comments', {
       model: Users,
       key: 'id'
     }
+  },
+  status: {
+    type:DataTypes.ENUM('active','deleted')
   }
 })
-Module.exports = Connents
+module.exports = Comments
