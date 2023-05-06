@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 
 const db = require('../utils/database')
-const Users = require('./utils/database')
+const Users = require('./users.models')
 
 const Follows = db.define('follows', {
   
@@ -20,7 +20,7 @@ const Follows = db.define('follows', {
       model: Users,
       key: 'id'
     }
-}
+  }
 }) 
 
 module.exports = Follows

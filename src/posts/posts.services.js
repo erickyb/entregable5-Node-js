@@ -1,7 +1,7 @@
 const postControllers = require('./posts.controllers')
 
 const { host } = require('../../config')
-const { query } = require('express')
+//const { query } = require('express')
 
 const getAllPosts = (req, res) => {
     
@@ -32,8 +32,7 @@ const getPostById = (req, res) => {
     if (data) {
         res.status(200).json(data)
     } else {
-      res.status(404).json({
-        message:'Post not found'})
+      res.status(404).json({       message:'Post not found'})
       }
   })
     .catch(err => {
@@ -44,7 +43,7 @@ const getPostById = (req, res) => {
 
 const getPostsByUser = (req, res) => {
   const userId = req.params.id
-  postControllers.finPostsByUserId(userId)
+  postControllers.findPostsByUserId(userId)
     .then(data => {
       res.status(200).json(data)
     })
@@ -55,22 +54,19 @@ const getPostsByUser = (req, res) => {
 
 const getPostsByMyUser = (req, res) => {
   const userId = req.user.id;
-  postControllers.findPostsByUserId
-    (userId)
+  postControllers.findPostsByUserId(userId)
     .then(data => {
       res.status(200).json(data)
     })
     .catch(err => {
-      res.status(400).json({
-        err: err.message})
+      res.status(400).json({err: err.message})
     })
 }
 
 const postNewPost = (req, res) => {
   const { content } = req.body
   const userId = req.user.id
-  postControllers.createPost({
-    userId})
+  postControllers.createPost({userId})
     .then(data => {
       res.status(201).json(data)
     })

@@ -1,20 +1,23 @@
-
+const uuid = require('uuid')
 
 const Comments = require('../models/comments.models')
 const Posts = require('../models/posts.models')
 const Users = require('../models/users.models')
-//solic leer
-const findAllCommentsByPost = async (postId) => {
+
+//principio solic leer
+const findAllCommentsByPostId = async (postId) => {
   const comments = await comments.findAll({
     where: {
-  postId : postId
+           postId : postId
     },
     include: [
       {
-        model:Posts
+        model: Users
+       
       },
       {
-      model:Users
+        model: Posts
+
       }
     ]
   })
@@ -31,9 +34,16 @@ const createComment = async (commentObj) => {
   })
   return newComment
 }
-createComment({
-  content: "Mi primer comentario",
-  postId: "a2470a60-f2c4-442c-a510-b818b2e151f6", userId: "13b4db9c-3f8d-49ed-b77d-b26743c42053"
-})
-  .then(data => console.log(data))
-  .catch(err => console.log(err))
+
+// createComment({
+//   content: "Mi primer comentario",
+//   postId: "a2470a60-f2c4-442c-a510-b818b2e151f6", userId: "13b4db9c-3f8d-49ed-b77d-b26743c42053"
+// })
+  // .then(data => console.log(data))
+  // .catch(err => console.log(err))
+
+
+module.exports = {
+    findAllCommentsByPostId,
+    createComment
+  }

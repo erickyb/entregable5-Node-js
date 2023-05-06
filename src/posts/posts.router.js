@@ -1,15 +1,15 @@
 const router = require('express').Router();
 
 const postServices = require('./posts.services');
+const commentsServices = require('../comments/comments.services')
+
 const passportJwt = require("../middlewares/passport.middleware");
 
 router.route("/")
   .get(postServices.getAllPosts)
   .post(
     passportJwt.authenticate("jwt", {
-      session: false
-    }),
-    postServices.postNewPost
+      session: false }), postServices.postNewPost
     
   );
 router.route("/:id")

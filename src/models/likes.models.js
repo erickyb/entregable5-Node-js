@@ -6,15 +6,13 @@ const Posts = require('./posts.models')
 
 
 const Likes = db.define('likes', {
-  
-  userId: {
-    type: DataTypes.UUID,
-    primaryKey: true,
-    references: {
-      model: Users,
-      key:'id'
-    },
-
+   userId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      references: {
+        model: Users,
+        key:'id'
+      },
   },
   postId: {
     type: DataTypes.UUID,
