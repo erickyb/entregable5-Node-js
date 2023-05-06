@@ -1,26 +1,17 @@
 # entregable5-Node-js
 
-API DE RED SOCIAL
- 
-1.- https://dbdiagram.io/d/644299866b31947051fc149d
+- OPCIONAL: Debera mostrar las conversaciones del usuario loggeado
 
-TEMAS POR REALIZAR EN PROCESO 
-TODO 
-- [x] CRUD de usuarios 
-- [x] Registro de Usuarios 
-- [ ] Manejar Publicaciones (CRUD) 
-- [ ] Reaccionar a las publicaciones 
-- [ ] Comentar publicaciones 
-- [ ] Buscador de usuarios 
-- [ ] Manejar seguidos y seguidores 
-- [ ] Notificaciones 
-- [ ] Publicaciones con imagenes 
-- [ ] Feed con todas las publicaciones 
-- [ ] Solicitudes de amistad 
-- [ ] Amigos en comun 
-- [ ] Compartir publicacion 
-- [ ] Favoritos
-- [ ] Login con diferentes cuentas
+### Retos Opcionales
 
-pm2
+a. /api/v1/conversations/:conversation_id/participants
+i. Esta ruta debe estar protegida
+ii. Mostrara los participantes de la conversacion
+iii. Permitira agregar nuevos participantes a la conversacion
+
+b. /api/v1/conversations/:conversation_id/participants/:participant_id
+i. Esta ruta debe estar protegida
+ii. Mostrara un participante en especifico de la conversacion
+iii. Permitira eliminar participantes de la conversacion
+
 

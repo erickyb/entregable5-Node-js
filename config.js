@@ -5,7 +5,6 @@ require('dotenv').config()
 
 const config = {
   port: process.env.PORT || 5000,
-  host: process.env.HOST ||"http://localhost:5000",
   nodeEnv: process.env.NODE_ENV || "dev", //? dev, prod, test
   jwtSecret: process.env.JWT_SECRET,
   db: {
@@ -13,7 +12,7 @@ const config = {
       dialect: "postgres",
       host: "localhost",
       port: 5432,
-      database: "Red Social",
+      database: "chat-db",
       username: "postgres",
       password: "root",
       //Extra configs
@@ -46,7 +45,7 @@ const config = {
       dialect: "postgres",
       host: "localhost",
       port: 5432,
-      database: "Red Social",
+      database: "chat-db",
       username: "postgres",
       password: "root",
       //Extra configs

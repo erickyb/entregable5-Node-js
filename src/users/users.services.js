@@ -1,103 +1,127 @@
 const userControllers = require('./users.controllers')
-//! const { findAllUsers, findUserById, createUser, updateUser } = require('./users.controllers')
+//? Get, Post
 
 const getAllUsers = (req, res) => {
-
-//TODO Agregar el limit y el offset desde los queries para manejar la paginacion, y generar url's dinamicas
-  
-   const offset = Number(req.query.offset) || 0
-   const limit = Number(req.query.limit) || 10
-  
-  
-
-  userControllers.findAllUsers(limit, offset )
+  userControllers.findAllUsers()
     .then((data) => {
-
-      const nextPageUrl = (data.count - offset) > limit ? `${host}/api/v1/users?limit=${limit}&offset=${offset + limit}` : null;
-      const prevPageUrl = (offset - limit) >= 0 ? `${host}/api/v1/users?limit=${limit}&offset=${offset - limit}` : null;
-
-      res.status(200).json({
-        count: data.count,
-        next: nextPageUrl,
-        prev: prevPageUrl,
-        results: data.rows
-      })
+      res.status(200).json(data)
     })
     .catch((err) => {
-      res.status(400).json({ message: 'Bad request', err })
+      res.status(400).json({ message: err.message })
     })
-      
 }
 
 const getUserById = (req, res) => {
   const id = req.params.id
   userControllers.findUserById(id)
-    .then(data => {
-      //? En caso de que data no exista (el usuario no exista)
-      if (!data) {
-        return res.status(404).json({ message: `User with id: ${id}, not found` })
+    .then((data) => {
+      if (data) {
+        res.status(200).json(data)
+      } else {
+        res.status(404).json({ message: 'Invalid ID' })
       }
-      res.status(200).json(data)
     })
-    .catch(err => {
-      res.status(400).json({ message: 'Bad request', err })
-    })
-}
-
-const postNewUser = (req, res) => {
-  const userObj = req.body
-  userControllers.createUser(userObj)
-    .then(data => {
-      res.status(201).json(data)
-    })
-    .catch(err => {
-      res.status(400).json({ message: 'Bad request', err:err.message })
-    })
-}
-
-const patchUser = (req, res) => {
-
-  const id = req.params.id
-  const userObj = req.body
-
-  userControllers.updateUser(id, userObj)
-    .then(data => {
-      if (!data) {
-        return res.status(404).json({ message: 'Invalid ID' })
-      }
-      res.status(200).json(data)
-    })
-    .catch(err => {
-      res.status(400).json({ message: 'Bad request', err })
-    })
-}
-
-const deleteUser = (req, res) => {
-  const id = req.params.id
-  userControllers.deleteUser(id)
-    .then(data => {
-      if (!data) {
-        return res.status(404).json({ message: 'Invalid ID' })
-      }
-      res.status(204).json()
-    })
-    .catch(err => {
-      res.status(400).json({ message: 'Bad request', err })
+    .catch((err) => {
+      res.status(400).json({ message: err.message })
     })
 }
 
 const getMyUser = (req, res) => {
-  const user = req.user
-  res.status(200).json(user)
+  const id = req.user.id
+  userControllers.findUserById(id)
+    .then((data) => {
+      res.status(200).json(data)
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message })
+    })
 }
 
 
+const postUser = (req, res) => {
+  const { firstName, lastName, email, password, gender, birthday } = req.body
+  userControllers.createUser({ firstName, lastName, email, password, gender, birthday })
+    .then((data) => {
+      res.status(201).json(data)
+    })
+    .catch((err) => {
+      res.status(400).json({
+        message: err.message, fields: {
+          firstName: 'String',
+          lastName: 'String',
+          email: 'example@example.com',
+          password: 'String',
+          gender: 'String',
+          birthday: 'YYYY/MM/DD'
+        }
+      })
+    })
+}
+
+//? Solo admins pueden ejecutarlo
+const patchUser = (req, res) => {
+  const id = req.params.id
+  const { firstName, lastName, email, gender, birthday, role, status } = req.body
+
+  userControllers.updateUser(id, { firstName, lastName, email, gender, birthday, role, status })
+    .then((data) => {
+      if (data) {
+        res.status(200).json({ message: `User edited succesfully with id: ${id}` })
+      } else {
+        res.status(404).json({ message: `User with id: ${id}, not found` })
+      }
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message })
+    })
+}
+
+const patchMyUser = (req, res) => {
+  const id = req.user.id
+  const { firstName, lastName, gender, birthday } = req.body
+  userControllers.updateUser(id, { firstName, lastName, gender, birthday })
+    .then(() => {
+      res.status(200).json({ message: 'Your user was edited succesfully!' })
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message })
+    })
+}
+
+//? Solo admins pueden ejecutarlo
+const deleteUser = (req, res) => {
+  const id = req.params.id
+  userControllers.deleteUser(id)
+    .then((data) => {
+      if (data) {
+        res.status(204).json()
+      } else {
+        res.status(404).json({ message: `User with id:${id}, Not Found` })
+      }
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message })
+    })
+}
+
+const deleteMyUser = (req, res) => {
+  const id = req.user.id
+  userControllers.deleteUser(id)
+    .then(() => {
+      res.status(204).json()
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message })
+    })
+}
 
 module.exports = {
   getAllUsers,
-  getUserById,
   getMyUser,
-  postNewUser,
+  getUserById,
+  postUser,
+  patchMyUser,
   patchUser,
+  deleteMyUser,
   deleteUser
 }
